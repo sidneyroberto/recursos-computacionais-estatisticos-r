@@ -200,5 +200,170 @@ exemplo <- runif(10, 1, 100)
 exemplo
 sort(exemplo)
 
+# Trabalhando com matrizes
+matrizA <- matrix(c(1:10), 2, 5, 1)
+matrizA
+
+matrizB <- matrix(exemplo, 2, 5, 1)
+matrizB
+
+matrizC <-matrix(sample(1:30, 9, replace = TRUE), 3, 3, 0)
+matrizC
+
+s <- c(13, 20, 10, 99, 8, 5, 7, 2, 1)
+s
+s1 <- c(3, 17, 50, 25, 3, 2, 60, 12, 0)
+s1
+
+tabela <- rbind(s, s1)
+tabela
+tabela <- cbind(s, s1)
+tabela
+
+x1 <- rbind(1:3, c(1, 3, -1), c(5, 6, 12))
+x1
+
+s <- 1:5
+s
+t <- 6:10
+t
+h <- cbind(s, t)
+h
+
+# Montando a matriz com vetores
+s <- c(22, 28, 37)
+m <- c(5, 33, "na")
+n <- c(34, 13, 24)
+
+x3 <- rbind(s, m, n)
+x3
+class(x3)
+str(x3)
+x4 <- cbind(s, m, n)
+x4
+
+x5 <- as.numeric(x4)
+x5
+
+x6 <- matrix(x5, 3, 3, 1)
+x6
+
+# Acessando os valores de uma matriz
+matrizA[2, 4]
+matrizA[2, 4] - matrizB[1, 2]
+matrizA[2,]
+matrizA1 <- matrizA[, 2:4]
+matrizA1
+
+# Operações com matrizes
+matrizA * matrizB
+t(matrizA) # transposta de A
+
+# Trabalhando com data frames
+notasInform <- data.frame(freq = c(100, 75, 80, 40),
+                          turma = c("tp1", "tp1", "tp2", "tp3"),
+                          notas = c(10.3, 9.3, 14.2, 15))
+notasInform
+str(notasInform)
+notasInform[2, 2]
+notasInform[, -2]
+notasInform$freq
+notasInform$turma
+notasInform$notas
+
+subset(notasInform, freq >= 80 & notas >=12)
+
+# Selecionando com indexação
+notasInform[notasInform$freq >= 80 & notasInform$notas >= 12, ]
+notasInform[notasInform$notas > 14, "freq"]
+notasInform[notasInform$turma == "tp1", c("freq", "notas")]
+
+# Utilizando attach
+attach(notasInform)
+notasInform[notas > 4, ]
+
+detach(notasInform)
+
+# Listar todos os arquivos que estão atachados
+tabela <- data.frame(animais = seq(1:20),
+                     trat = rep(c("t1", "t2", "t3", "t4", "t5")),
+                     pesonascer = rnorm(20, 28, 4))
+tabela
+
+tabela1 <- data.frame(parcelas = seq(1:30),
+                      trat = rep(c("0", "1%", "2%"), 10),
+                      altura = round(rnorm(30, 50, 7), digits = 2))
+tabela1
+
+attach(tabela)
+attach(tabela1)
+
+trat
+pesonascer
+tabela$trat
+
+intersect(search(), objects()) # lista todos os dados atachados
+
+# Realiza a limpeza dos atachamentos
+detach(tabela)
+detach(tabela1)
+detach(notasInform)
+
+intersect(search(), objects())
+
+# Acrescentando novas colunas
+resultado <- c("aprovado", "oral", "aprovado", "aprovado")
+notasInform$resultado <- resultado
+notasInform
+notasAlteradas <- notasInform[, -3]
+notasAlteradas
+
+# Plotando gráficos
+plot(rnorm(10))
+
+attach(alturas_pesos)
+View(alturas_pesos)
+par(mfrow = c(1, 1))
+plot(altura, peso, xlab = "Altura", ylab = "Peso")
+
+par(mfrow = c(2, 2))
+?plot(rnorm(10))
+plot(rnorm(20))
+plot(rnorm(30))
+plot(rnorm(40))
+
+a <- 1:50
+plot(a, a ^ 2, type = "l")
+points(rev(a ^ 2), pch=10, col = 10)
+
+# Gráfico com dados textuais
+sexo <- c("Ma", "Ma", "Ma", "Ma", "Ma", "Fe", "Fe", "Fe", "Fe", "Fe")
+peso <- c(110, 120, 90, 70, 50, 80, 40, 40, 50, 30)
+plot(sexo, peso) # dá erro, pois não é numérico
+sexoFem <- factor(sexo)
+stripchart(peso ~ sexo)
+stripchart(peso ~ sexo, vertical = T, at = c(1.3, 1.7), method = "stack")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
