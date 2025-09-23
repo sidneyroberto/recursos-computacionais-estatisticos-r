@@ -1,0 +1,124 @@
+---
+title: "regressao_linear"
+output: html_document
+date: "2025-09-23"
+---
+```{r}
+library(readxl)
+dados <- read_excel("Dados_regressao.xlsx")
+dados
+```
+```{r}
+plot(x = dados$`DAP (cm)`, y = dados$`Altura (m)`, xlab = "DAP", ylab = "Altura")
+```
+```{r}
+ajuste <- lm(dados$`Altura (m)` ~ dados$`DAP (cm)`)
+ajuste
+```
+
+```{r}
+summary(ajuste)
+```
+```{r}
+desvios <- residuals(ajuste)
+desvios
+```
+```{r}
+sum(desvios)
+sd(desvios)
+shapiro.test(desvios)
+
+library(lmtest)
+
+gqtest(ajuste)
+```
+
+```{r}
+ajuste <- lm(dados$`Altura (m)` ~ dados$`DAP (cm)` + I(dados$`DAP (cm)` ^ 2))
+ajuste
+```
+
+```{r}
+summary(ajuste)
+```
+```{r}
+desvios <- residuals(ajuste)
+desvios
+```
+```{r}
+sum(desvios)
+sd(desvios)
+shapiro.test(desvios)
+
+library(lmtest)
+
+gqtest(ajuste)
+```
+
+```{r}
+ajuste <- lm(log(dados$`Altura (m)`) ~ log(dados$`DAP (cm)`))
+ajuste
+```
+
+```{r}
+summary(ajuste)
+```
+```{r}
+desvios <- dados$`Altura (m)` - exp(ajuste$fitted.values)
+desvios
+```
+```{r}
+sum(desvios)
+sd(desvios)
+shapiro.test(desvios)
+
+library(lmtest)
+
+gqtest(ajuste)
+```
+
+```{r}
+library(scatterplot3d)
+
+grafico <- scatterplot3d(x = dados$`DAP (cm)`,
+                         y = dados$`Altura (m)`,
+                         z = dados$`Volume total (m3)`,
+                         xlab = "DAP",
+                         ylab = "Altura",
+                         zlab = "Volume")
+```
+```{r}
+library(rgl)
+
+plot3d(x = dados$`DAP (cm)`,
+                         y = dados$`Altura (m)`,
+                         z = dados$`Volume total (m3)`,
+                         xlab = "DAP",
+                         ylab = "Altura",
+                         zlab = "Volume")
+```
+```{r}
+ajuste <- lm(dados$`Volume total (m3)` ~ dados$`DAP (cm)` + dados$`Altura (m)`)
+ajuste
+```
+```{r}
+desvios <- residuals(ajuste)
+desvios
+```
+
+
+```{r}
+sum(desvios)
+sd(desvios)
+shapiro.test(desvios)
+
+library(lmtest)
+
+gqtest(ajuste)
+```
+
+
+
+
+
+
