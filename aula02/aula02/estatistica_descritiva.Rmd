@@ -1,0 +1,75 @@
+---
+title: "estatistica_descritiva"
+output: html_document
+date: "2025-09-23"
+---
+```{r}
+dados <- rnorm(11500,
+               mean = 62,
+               sd = 7)
+dados <- round(dados, digits = 1)
+```
+
+```{r}
+media <- mean(dados) # média
+media
+median(dados) # mediana
+```
+
+```{r}
+library(modeest)
+mfv(dados) # moda
+```
+
+```{r}
+summary(dados) # resumo dos dados
+```
+
+```{r}
+var(dados) # variância dos dados
+desvioPadrao <- sd(dados) # desvio padrão
+desvioPadrao
+coeficienteVariacao <- desvioPadrao / media * 100 # coeficiente de variação
+coeficienteVariacao
+```
+
+```{r}
+boxplot(dados)
+```
+
+
+```{r}
+hist(dados, xlab = "Dados", ylab = "Frequência", main = "Histograma dos dados")
+```
+```{r}
+t.test(dados, conf.level = 0.99) # intervalo de confiança
+```
+
+```{r}
+library(pastecs)
+stat.desc(dados)
+```
+```{r}
+library(readxl)
+dadosEstudantes <- read_excel("dados.xlsx")
+dadosEstudantes
+```
+```{r}
+stat.desc(dadosEstudantes)
+```
+```{r}
+library(dplyr)
+```
+
+```{r}
+toto = dadosEstudantes %>%
+  group_by(Sexo) %>%
+  summarise("Idade média" = mean(Idade),
+            "Idade máxima" = max(Idade),
+            "Idade mínima" = min(Idade),
+            "Variância da idade" = var(Idade),
+            "Desvio padrão da idade" = sd(Idade))
+
+toto
+```
+
