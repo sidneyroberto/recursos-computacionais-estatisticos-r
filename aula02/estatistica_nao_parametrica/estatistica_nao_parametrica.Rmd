@@ -1,0 +1,76 @@
+---
+title: "estatistica_nao_parametrica"
+output: html_document
+date: "2025-09-23"
+---
+
+```{r}
+library(readxl)
+dados <- read_excel("Banco de dados Não paramétrica.xlsx")
+dados
+```
+
+```{r}
+anova <- aov(dados$`N (g/kg)` ~ dados$ID + dados$Cultivar)
+anova
+```
+
+
+```{r}
+desvios <- residuals(anova)
+desvios
+```
+
+```{r}
+shapiro.test(desvios)
+```
+
+```{r}
+bartlett.test(desvios ~ dados$Cultivar)
+```
+
+```{r}
+pairwise.wilcox.test(x = dados$`N (g/kg)`,
+                     g = dados$Cultivar,
+                     p.adjust.method = "bonferroni")
+```
+
+```{r}
+pairwise.wilcox.test(x = dados$`Proteína (%)`,
+                     g = dados$Cultivar,
+                     p.adjust.method = "bonferroni")
+```
+```{r}
+pairwise.wilcox.test(x = dados$`Oxalato (mg/100 g)`,
+                     g = dados$Cultivar,
+                     p.adjust.method = "bonferroni")
+```
+
+```{r}
+kruskal.test(x = dados$`N (g/kg)`, g = dados$Cultivar)
+```
+```{r}
+library(agricolae)
+
+naoParametrica <- kruskal(y = dados$`N (g/kg)`, trt = dados$Cultivar)
+naoParametrica
+```
+```{r}
+library(FSA)
+dunnTest(dados$`N (g/kg)` ~ dados$Cultivar)
+```
+```{r}
+library(dunn.test)
+
+dunn.test(x = dados$`N (g/kg)`, g = dados$Cultivar)
+```
+```{r}
+friedman.test(y = dados$`N (g/kg)`, groups = dados$Cultivar, blocks = dados$ID)
+```
+
+```{r}
+library(PMCMRplus)
+
+frdAllPairsSiegelTest(y = dados$`N (g/kg)`, groups = dados$Cultivar, blocks = dados$ID)
+```
+
