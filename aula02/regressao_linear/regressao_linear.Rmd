@@ -99,7 +99,7 @@ plot3d(x = dados$`DAP (cm)`,
 ```
 ```{r}
 ajuste <- lm(dados$`Volume total (m3)` ~ dados$`DAP (cm)` + dados$`Altura (m)`)
-ajuste
+summary(ajuste)
 ```
 ```{r}
 desvios <- residuals(ajuste)
@@ -116,9 +116,32 @@ library(lmtest)
 
 gqtest(ajuste)
 ```
+```{r}
+hist(desvios)
+```
 
+```{r}
+cor.test(dados$`DAP (cm)`, dados$`Altura (m)`)
+```
+```{r}
+library(Hmisc)
 
+rcorr(as.matrix(dados[, 3:6]))
+```
 
+```{r}
+library(PerformanceAnalytics)
 
+chart.Correlation(dados[, 3:6])
+```
+```{r}
+library(GGally)
+
+ggpairs(dados[, 3:6])
+```
+
+```{r}
+ggpairs(dados[, -2])
+```
 
 
