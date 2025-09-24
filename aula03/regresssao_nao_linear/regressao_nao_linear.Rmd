@@ -32,6 +32,57 @@ library(lmtest)
 gqtest(desvios ~ dados$V)
 ```
 ```{r}
+valorEstimado <- fitted.values(ajusteNaoLinear)
+valorEstimado
+(cor(dados$V, valorEstimado)) ^ 2 # Valor do R^2
+```
+```{r}
+plot(dados$V, valorEstimado, xlab = "Valor observado", ylab = "Valor estimado")
+```
+```{r}
+par(mfrow = c(2, 2))
+plot(dados$V, valorEstimado, xlab = "Valor observado", ylab = "Valor estimado")
+lines(x = c(0, 10), 
+      y = c(0, 10), 
+      col = "red")
 
+plot(dados$V, desvios, xlab = "Valor observado", ylab = "Desvios")
+lines(x = c(0, 10), y = c(0, 0),  col = "blue")
+hist(desvios)
+boxplot(desvios)
+```
+```{r}
+dadosMudas <- read_excel("BD_Regressão não linear.xlsx", 
+    sheet = "Mudas")
+dadosMudas
+```
+
+```{r}
+plot(dadosMudas$Dias, dadosMudas$`Altura(cm)`, xlab = "Dias", ylab = "Altura (cm)")
+```
+
+```{r}
+equacaoLogistica = nls(dadosMudas$`Altura(cm)` ~ SSlogis(input = Dias,
+                       Asym,
+                       xmid,
+                       scal),
+                       data = dadosMudas)
+summary(equacaoLogistica)
+```
+```{r}
+valorEstimado <- fitted.values(equacaoLogistica)
+plot(dadosMudas$Dias, dadosMudas$`Altura(cm)`, xlab = "Dias", ylab = "Altura (cm)")
+lines(x = dadosMudas$Dias, y = valorEstimado, col = "red")
+```
+```{r}
+desvios <- dadosMudas$`Altura(cm)` - valorEstimado
+sum(desvios)
+sd(desvios)
+shapiro.test(desvios)
+gqtest(desvios ~ dadosMudas$`Altura(cm)`)
+
+par(mfrow = c(1, 2))
+hist(desvios)
+boxplot(desvios)
 ```
 

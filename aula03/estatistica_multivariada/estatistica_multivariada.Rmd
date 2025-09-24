@@ -1,0 +1,12 @@
+---
+title: "estatistica_multivariada"
+output: html_document
+date: "2025-09-24"
+---
+
+```{r}
+library(readxl)
+dados <- read_excel("Banco de dados_multivariada.xlsx")
+dados
+```
+
