@@ -1,0 +1,56 @@
+---
+title: "machine_learning"
+output: html_document
+date: "2025-09-24"
+---
+
+```{r}
+library(readxl)
+dados <- read_excel("Dados_regressao (2).xlsx")
+dados
+```
+```{r}
+normalize <- function(x) {
+  return ((x - min(x)) / (max(x) - min(x)))
+}
+```
+```{r}
+dadosNormalizados <- data.frame(lapply(dados[, -3], normalize))
+dadosNormalizados$Volume <- dados$Volume
+dadosNormalizados
+```
+```{r}
+library(neuralnet)
+
+rna <- neuralnet(Volume ~ DAP + Altura, 
+                 data = dadosNormalizados, 
+                 hidden = c(4, 4, 2),
+                 act.fct = "logistic",
+                 linear.output = TRUE,
+                 algorithm = "rprop+",
+                 threshold = 0.0001,
+                 stepmax = 1e+06)
+```
+
+```{r}
+plot(rna)
+```
+```{r}
+volumeEstimado <- as.data.frame(rna$net.result)[,1]
+plot(dados$Volume, volumeEstimado, xlab = "Volumes observados", ylab = "Volumes estimados")
+lines(x = c(0, 100), y = c(0, 100), col = "blue")
+```
+```{r}
+desvios <- dados$Volume - volumeEstimado
+sum(desvios)
+sd(desvios)
+shapiro.test(desvios)
+
+library(lmtest)
+gqtest(desvios ~ dados$Volume)
+
+par(mfrow = c(1, 2))
+hist(desvios)
+boxplot(desvios)
+```
+
