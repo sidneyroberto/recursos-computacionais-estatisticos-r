@@ -1,0 +1,66 @@
+---
+title: "machine_learning"
+output: html_document
+date: "2025-09-25"
+---
+
+```{r}
+library(readxl)
+dados <- read_excel("Dados_regressao (2).xlsx")
+dados
+```
+```{r}
+library(e1071)
+
+modeloSVM <- svm(dados$Volume ~ dados$DAP + dados$Altura)
+summary(modeloSVM)
+```
+```{r}
+volumeEstimado <- predict(modeloSVM)
+volumeEstimado
+```
+```{r}
+plot(dados$Volume, volumeEstimado, xlab = "Volume observado", ylab = "Volume estimado")
+lines(x = c(0, 1000), y = c(0, 1000), col = "red")
+```
+```{r}
+desvios <- dados$Volume - volumeEstimado
+sum(desvios)
+sd(desvios)
+shapiro.test(desvios)
+
+library(lmtest)
+gqtest(desvios ~ dados$Volume)
+
+par(mfrow = c(1, 2))
+hist(desvios)
+boxplot(desvios)
+```
+```{r}
+# Random Forest
+library(randomForest)
+
+modeloRF <- randomForest(dados$Volume ~ dados$DAP + dados$Altura)
+summary(modeloRF)
+```
+```{r}
+plot(modeloRF)
+```
+```{r}
+volumeEstimado <- predict(modeloRF)
+
+plot(dados$Volume, volumeEstimado, xlab = "Volume observado", ylab = "Volume estimado")
+lines(x = c(0, 1000), y = c(0, 1000), col = "red")
+```
+```{r}
+desvios <- dados$Volume - volumeEstimado
+sum(desvios)
+sd(desvios)
+shapiro.test(desvios)
+gqtest(desvios ~ dados$Volume)
+
+par(mfrow = c(1, 2))
+hist(desvios)
+boxplot(desvios)
+```
+

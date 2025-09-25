@@ -1,0 +1,77 @@
+---
+title: "ggplot2"
+output: html_document
+date: "2025-09-25"
+---
+
+```{r}
+library(readxl)
+dados <- read_excel("Dados_GGplot2.xlsx")
+dados
+```
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot(data = dados, 
+       aes(y = DAP,
+           x = Idade,
+           colour = Clone)) +
+  geom_boxplot()
+
+ggsave(
+  filename = "boxplot.tiff",
+  plot = last_plot(),
+  device = "tiff",
+  path = NULL,
+  scale = 1,
+  width = 30,
+  height = 15,
+  units = "cm",
+  dpi = 300)
+```
+```{r}
+ggplot(data = dados, 
+       aes(y = DAP,
+           x = Idade,
+           colour = Clone)) +
+  geom_violin(trim = FALSE)
+```
+```{r}
+ggplot(data = dados,
+       aes(y = DAP,
+           fill = Clone)) +
+  geom_boxplot() +
+  facet_grid(Idade ~ Fazenda) +
+  theme_classic()
+```
+```{r}
+ggplot(data = dados,
+       aes(x = DAP,
+           y = Altura,
+           size = AB,
+           colour = Volume,
+           shape = Fazenda)) +
+  geom_point() +
+  facet_grid(Idade ~ Clone) +
+  geom_smooth(method = "lm") +
+  theme_light()
+```
+```{r}
+ggplot(data = dados,
+       aes(x = DAP,
+           y = Altura,
+           size = AB,
+           colour = Volume,
+           shape = Fazenda)) +
+  geom_point() +
+  facet_grid(Idade ~ Clone) +
+  geom_smooth(aes(linetype = Fazenda),  # <-- cor diferente por Fazenda
+              method = "lm", se = TRUE) +
+  theme_light() +
+  labs(x = "DAP (cm)",
+       y = "Altura (m)",
+       title = "Gráfico Topzera")
+```
+
